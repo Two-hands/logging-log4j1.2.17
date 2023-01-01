@@ -114,6 +114,7 @@ public class Logger extends Category {
   static
   public
   Logger getLogger(Class clazz) {
+    //日志管理类
     return LogManager.getLogger(clazz.getName());
   }
 
