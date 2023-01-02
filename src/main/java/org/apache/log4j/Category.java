@@ -45,78 +45,30 @@ import java.util.Vector;
 
 
 /**
- * <font color="#AA2222"><b>This class has been deprecated and
- * replaced by the {@link Logger} <em>subclass</em></b></font>. It
- * will be kept around to preserve backward compatibility until mid
- * 2003.
- *
- * <p><code>Logger</code> is a subclass of Category, i.e. it extends
- * Category. In other words, a logger <em>is</em> a category. Thus,
- * all operations that can be performed on a category can be
- * performed on a logger. Internally, whenever log4j is asked to
- * produce a Category object, it will instead produce a Logger
- * object. Log4j 1.2 will <em>never</em> produce Category objects but
- * only <code>Logger</code> instances. In order to preserve backward
- * compatibility, methods that previously accepted category objects
- * still continue to accept category objects.
- *
- * <p>For example, the following are all legal and will work as
- * expected.
- *
- * <pre>
- * &nbsp;&nbsp;&nbsp;// Deprecated form:
- * &nbsp;&nbsp;&nbsp;Category cat = Category.getInstance("foo.bar")
- *
- * &nbsp;&nbsp;&nbsp;// Preferred form for retrieving loggers:
- * &nbsp;&nbsp;&nbsp;Logger logger = Logger.getLogger("foo.bar")
- * </pre>
- *
- * <p>The first form is deprecated and should be avoided.
- *
- * <p><b>There is absolutely no need for new client code to use or
- * refer to the <code>Category</code> class.</b> Whenever possible,
- * please avoid referring to it or using it.
- *
- * <p>See the <a href="../../../../manual.html">short manual</a> for an
- * introduction on this class.
- * <p>
- * See the document entitled <a href="http://www.qos.ch/logging/preparingFor13.html">preparing
- * for log4j 1.3</a> for a more detailed discussion.
- *
+ * Category类已经不再推荐直接使用，而是使用其子类Logger
+ * Logger保持了向后兼容
  * @author Ceki G&uuml;lc&uuml;
  * @author Anders Kristensen
  */
 public class Category implements AppenderAttachable {
 
     /**
-     The hierarchy where categories are attached to by default.
-     */
-    //static
-    //public
-    //final Hierarchy defaultHierarchy = new Hierarchy(new
-    //					   RootCategory(Level.DEBUG));
-
-    /**
-     * The name of this category.
+     * 类别（category）名称
      */
     protected String name;
 
     /**
-     * The assigned level of this category.  The
-     * <code>level</code> variable need not be assigned a value in
-     * which case it is inherited form the hierarchy.
+     *  此类别的日志级别，该值可以被其他Logger（属于该类别的）继承
      */
     volatile protected Level level;
 
     /**
-     * The parent of this category. All categories have at least one
-     * ancestor which is the root category.
+     * 此类别的父级类别，所有的类别都至少有一个根类别祖先
      */
     volatile protected Category parent;
 
     /**
-     * The fully qualified name of the Category class. See also the
-     * getFQCN method.
+     * 类别类名的全限定类名FQCN(fully qualified name of Category class)
      */
     private static final String FQCN = Category.class.getName();
 
@@ -125,39 +77,28 @@ public class Category implements AppenderAttachable {
     // Categories need to know what Hierarchy they are in
     protected LoggerRepository repository;
 
-
+    /*
+    appender的实现类
+     */
     AppenderAttachableImpl aai;
 
     /**
-     * Additivity is set to true by default, that is children inherit
-     * the appenders of their ancestors by default. If this variable is
-     * set to <code>false</code> then the appenders found in the
-     * ancestors of this category are not used. However, the children
-     * of this category will inherit its appenders, unless the children
-     * have their additivity flag set to <code>false</code> too. See
-     * the user manual for more details.
+     * appenders的可加性，即：
+     *    若该值设置为true，则该类别A的子级别B可以继承A中的appenders，该类别A可以继承A的父级别C中的appenders
+     *    若该值设置为false，则该类别A的子类B可以继承A的appenders(除非B中该值也为false,则B无法继承A中的appenders)，
+     *    该类型A不会继承A的父级别C中的appenders
      */
     protected boolean additive = true;
 
     /**
-     * This constructor created a new <code>Category</code> instance and
-     * sets its name.
-     *
-     * <p>It is intended to be used by sub-classes only. You should not
-     * create categories directly.
-     *
-     * @param name The name of the category.
+     * 构造器，指定类别的名称，该构造器仅供子类调用，不能直接调用该方法进行类别对象的创建
      */
     protected Category(String name) {
         this.name = name;
     }
 
     /**
-     * Add <code>newAppender</code> to the list of appenders of this
-     * Category instance.
-     *
-     * <p>If <code>newAppender</code> is already in the list of
-     * appenders, then it won't be added again.
+     * 添加一个新的appender到该类别实例中的aai属性中
      */
     synchronized
     public void addAppender(Appender newAppender) {
@@ -188,26 +129,22 @@ public class Category implements AppenderAttachable {
 
 
     /**
-     * Call the appenders in the hierrachy starting at
-     * <code>this</code>.  If no appenders could be found, emit a
-     * warning.
-     *
-     * <p>This method calls all the appenders inherited from the
-     * hierarchy circumventing any evaluation of whether to log or not
-     * to log the particular log request.
-     *
+     * 从此类别开始，按照层次结构（从此类别到父类....祖先类）调用appenders
+     * 调用执行时需要根据类别的属性设置、日志实例类的级别等情况合理处理
      * @param event the event to log.
      */
     public void callAppenders(LoggingEvent event) {
         int writes = 0;
 
         for (Category c = this; c != null; c = c.parent) {
-            // Protected against simultaneous call to addAppender, removeAppender,...
+            //加锁 避免在执行appender操作的同事对该对象的添加（addAppender[方法有加锁]）、移除（removeAppender[方法有加锁]）等操作
             synchronized (c) {
                 if (c.aai != null) {
+                    //调用当前category实例中的appenders
                     writes += c.aai.appendLoopOnAppenders(event);
                 }
                 if (!c.additive) {
+                    //若当前category的appenders的可加性为false，则跳过不执行当前category实例中的appenders
                     break;
                 }
             }
@@ -219,9 +156,7 @@ public class Category implements AppenderAttachable {
     }
 
     /**
-     * Close all attached appenders implementing the AppenderAttachable
-     * interface.
-     *
+     *  该类别中的所有appender执行close方法
      * @since 1.0
      */
     synchronized void closeNestedAppenders() {

@@ -23,7 +23,9 @@ import java.util.Enumeration;
 
 /**
  * Interface for attaching appenders to objects.
- *
+ *  一个可以将appender对象附着到其他对象的接口
+ *  进一步理解为：这个接口可以将其他对象与appender对象建立某种联系
+ *  这里的appender是一个用于决定将日志以何种形式输出到何处
  * @author Ceki G&uuml;lc&uuml;
  * @since 0.9.1
  */
@@ -69,7 +71,6 @@ public interface AppenderAttachable {
      * Remove the appender with the name passed as parameter from the
      * list of appenders.
      */
-    void
-    removeAppender(String name);
+    void removeAppender(String name);
 }
 
