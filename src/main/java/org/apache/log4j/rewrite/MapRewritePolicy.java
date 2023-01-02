@@ -34,9 +34,9 @@ import org.apache.log4j.spi.LoggingEvent;
  * If both the original property set and the message map
  * contain the same entry, the value from the message map
  * will overwrite the original property set.
- *
+ * <p>
  * The combination of the RewriteAppender and this policy
- * performs the same actions as the MapFilter from log4j 1.3. 
+ * performs the same actions as the MapFilter from log4j 1.3.
  */
 public class MapRewritePolicy implements RewritePolicy {
     /**
@@ -57,9 +57,9 @@ public class MapRewritePolicy implements RewritePolicy {
                 newMsg = msg;
             }
 
-            for(Iterator iter = eventProps.entrySet().iterator();
-                    iter.hasNext();
-                  ) {
+            for (Iterator iter = eventProps.entrySet().iterator();
+                 iter.hasNext();
+            ) {
                 Map.Entry entry = (Map.Entry) iter.next();
                 if (!("message".equals(entry.getKey()))) {
                     props.put(entry.getKey(), entry.getValue());
@@ -68,7 +68,7 @@ public class MapRewritePolicy implements RewritePolicy {
 
             return new LoggingEvent(
                     source.getFQNOfLoggerClass(),
-                    source.getLogger() != null ? source.getLogger(): Logger.getLogger(source.getLoggerName()), 
+                    source.getLogger() != null ? source.getLogger() : Logger.getLogger(source.getLoggerName()),
                     source.getTimeStamp(),
                     source.getLevel(),
                     newMsg,

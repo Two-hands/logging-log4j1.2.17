@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,69 +30,69 @@ import java.util.Enumeration;
 // Contributed by ThoughtWorks Inc.
 
 public class CategoryExplorerLogRecordFilter implements LogRecordFilter {
-  //--------------------------------------------------------------------------
-  //   Constants:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Constants:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Protected Variables:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Protected Variables:
+    //--------------------------------------------------------------------------
 
-  protected CategoryExplorerModel _model;
+    protected CategoryExplorerModel _model;
 
-  //--------------------------------------------------------------------------
-  //   Private Variables:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Private Variables:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Constructors:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Constructors:
+    //--------------------------------------------------------------------------
 
-  public CategoryExplorerLogRecordFilter(CategoryExplorerModel model) {
-    _model = model;
-  }
-
-  //--------------------------------------------------------------------------
-  //   Public Methods:
-  //--------------------------------------------------------------------------
-
-  /**
-   * @return true if the CategoryExplorer model specified at construction
-   * is accepting the category of the specified LogRecord.  Has a side-effect
-   * of adding the CategoryPath of the LogRecord to the explorer model
-   * if the CategoryPath is new.
-   */
-  public boolean passes(LogRecord record) {
-    CategoryPath path = new CategoryPath(record.getCategory());
-    return _model.isCategoryPathActive(path);
-  }
-
-  /**
-   * Resets the counters for the contained CategoryNodes to zero.
-   */
-  public void reset() {
-    resetAllNodes();
-  }
-
-  //--------------------------------------------------------------------------
-  //   Protected Methods:
-  //--------------------------------------------------------------------------
-
-  protected void resetAllNodes() {
-    Enumeration nodes = _model.getRootCategoryNode().depthFirstEnumeration();
-    CategoryNode current;
-    while (nodes.hasMoreElements()) {
-      current = (CategoryNode) nodes.nextElement();
-      current.resetNumberOfContainedRecords();
-      _model.nodeChanged(current);
+    public CategoryExplorerLogRecordFilter(CategoryExplorerModel model) {
+        _model = model;
     }
-  }
-  //--------------------------------------------------------------------------
-  //   Private Methods:
-  //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Nested Top-Level Classes or Interfaces
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Public Methods:
+    //--------------------------------------------------------------------------
+
+    /**
+     * @return true if the CategoryExplorer model specified at construction
+     * is accepting the category of the specified LogRecord.  Has a side-effect
+     * of adding the CategoryPath of the LogRecord to the explorer model
+     * if the CategoryPath is new.
+     */
+    public boolean passes(LogRecord record) {
+        CategoryPath path = new CategoryPath(record.getCategory());
+        return _model.isCategoryPathActive(path);
+    }
+
+    /**
+     * Resets the counters for the contained CategoryNodes to zero.
+     */
+    public void reset() {
+        resetAllNodes();
+    }
+
+    //--------------------------------------------------------------------------
+    //   Protected Methods:
+    //--------------------------------------------------------------------------
+
+    protected void resetAllNodes() {
+        Enumeration nodes = _model.getRootCategoryNode().depthFirstEnumeration();
+        CategoryNode current;
+        while (nodes.hasMoreElements()) {
+            current = (CategoryNode) nodes.nextElement();
+            current.resetNumberOfContainedRecords();
+            _model.nodeChanged(current);
+        }
+    }
+    //--------------------------------------------------------------------------
+    //   Private Methods:
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    //   Nested Top-Level Classes or Interfaces
+    //--------------------------------------------------------------------------
 }
 

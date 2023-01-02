@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -35,29 +36,36 @@ import org.apache.log4j.Logger;
  * @author <a href="mailto:oliver@puppycrawl.com">Oliver Burn</a>
  */
 class DetailPanel
-    extends JPanel
-    implements ListSelectionListener
-{
-    /** used to log events **/
+        extends JPanel
+        implements ListSelectionListener {
+    /**
+     * used to log events
+     **/
     private static final Logger LOG =
-        Logger.getLogger(DetailPanel.class);
+            Logger.getLogger(DetailPanel.class);
 
-    /** used to format the logging event **/
+    /**
+     * used to format the logging event
+     **/
     private static final MessageFormat FORMATTER = new MessageFormat(
-        "<b>Time:</b> <code>{0,time,medium}</code>" +
-        "&nbsp;&nbsp;<b>Priority:</b> <code>{1}</code>" +
-        "&nbsp;&nbsp;<b>Thread:</b> <code>{2}</code>" +
-        "&nbsp;&nbsp;<b>NDC:</b> <code>{3}</code>" +
-        "<br><b>Logger:</b> <code>{4}</code>" +
-        "<br><b>Location:</b> <code>{5}</code>" +
-        "<br><b>Message:</b>" +
-        "<pre>{6}</pre>" +
-        "<b>Throwable:</b>" +
-        "<pre>{7}</pre>");
+            "<b>Time:</b> <code>{0,time,medium}</code>" +
+                    "&nbsp;&nbsp;<b>Priority:</b> <code>{1}</code>" +
+                    "&nbsp;&nbsp;<b>Thread:</b> <code>{2}</code>" +
+                    "&nbsp;&nbsp;<b>NDC:</b> <code>{3}</code>" +
+                    "<br><b>Logger:</b> <code>{4}</code>" +
+                    "<br><b>Location:</b> <code>{5}</code>" +
+                    "<br><b>Message:</b>" +
+                    "<pre>{6}</pre>" +
+                    "<b>Throwable:</b>" +
+                    "<pre>{7}</pre>");
 
-    /** the model for the data to render **/
+    /**
+     * the model for the data to render
+     **/
     private final MyTableModel mModel;
-    /** pane for rendering detail **/
+    /**
+     * pane for rendering detail
+     **/
     private final JEditorPane mDetails;
 
     /**
@@ -80,7 +88,9 @@ class DetailPanel
         rowSM.addListSelectionListener(this);
     }
 
-    /** @see ListSelectionListener **/
+    /**
+     * @see ListSelectionListener
+     **/
     public void valueChanged(ListSelectionEvent aEvent) {
         //Ignore extra messages.
         if (aEvent.getValueIsAdjusting()) {
@@ -94,16 +104,16 @@ class DetailPanel
             final int selectedRow = lsm.getMinSelectionIndex();
             final EventDetails e = mModel.getEventDetails(selectedRow);
             final Object[] args =
-            {
-                new Date(e.getTimeStamp()),
-                e.getPriority(),
-                escape(e.getThreadName()),
-                escape(e.getNDC()),
-                escape(e.getCategoryName()),
-                escape(e.getLocationDetails()),
-                escape(e.getMessage()),
-                escape(getThrowableStrRep(e))
-            };
+                    {
+                            new Date(e.getTimeStamp()),
+                            e.getPriority(),
+                            escape(e.getThreadName()),
+                            escape(e.getNDC()),
+                            escape(e.getCategoryName()),
+                            escape(e.getLocationDetails()),
+                            escape(e.getMessage()),
+                            escape(getThrowableStrRep(e))
+                    };
             mDetails.setText(FORMATTER.format(args));
             mDetails.setCaretPosition(0);
         }
@@ -136,6 +146,7 @@ class DetailPanel
     /**
      * Escape &lt;, &gt; &amp; and &quot; as their entities. It is very
      * dumb about &amp; handling.
+     *
      * @param aStr the String to escape.
      * @return the escaped String
      */
@@ -148,21 +159,21 @@ class DetailPanel
         for (int i = 0; i < aStr.length(); i++) {
             char c = aStr.charAt(i);
             switch (c) {
-            case '<':
-                buf.append("&lt;");
-                break;
-            case '>':
-                buf.append("&gt;");
-                break;
-            case '\"':
-                buf.append("&quot;");
-                break;
-            case '&':
-                buf.append("&amp;");
-                break;
-            default:
-                buf.append(c);
-                break;
+                case '<':
+                    buf.append("&lt;");
+                    break;
+                case '>':
+                    buf.append("&gt;");
+                    break;
+                case '\"':
+                    buf.append("&quot;");
+                    break;
+                case '&':
+                    buf.append("&amp;");
+                    break;
+                default:
+                    buf.append(c);
+                    break;
             }
         }
         return buf.toString();

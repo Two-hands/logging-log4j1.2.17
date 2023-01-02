@@ -50,6 +50,7 @@ public final class DefaultThrowableRenderer implements ThrowableRenderer {
 
     /**
      * Render throwable using Throwable.printStackTrace.
+     *
      * @param throwable throwable, may not be null.
      * @return string representation.
      */
@@ -58,19 +59,19 @@ public final class DefaultThrowableRenderer implements ThrowableRenderer {
         PrintWriter pw = new PrintWriter(sw);
         try {
             throwable.printStackTrace(pw);
-        } catch(RuntimeException ex) {
+        } catch (RuntimeException ex) {
         }
         pw.flush();
         LineNumberReader reader = new LineNumberReader(
                 new StringReader(sw.toString()));
         ArrayList lines = new ArrayList();
         try {
-          String line = reader.readLine();
-          while(line != null) {
-            lines.add(line);
-            line = reader.readLine();
-          }
-        } catch(IOException ex) {
+            String line = reader.readLine();
+            while (line != null) {
+                lines.add(line);
+                line = reader.readLine();
+            }
+        } catch (IOException ex) {
             if (ex instanceof InterruptedIOException) {
                 Thread.currentThread().interrupt();
             }

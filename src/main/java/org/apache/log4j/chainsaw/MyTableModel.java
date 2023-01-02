@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.swing.table.AbstractTableModel;
+
 import org.apache.log4j.Priority;
 import org.apache.log4j.Logger;
 
@@ -35,15 +36,17 @@ import org.apache.log4j.Logger;
  * @author <a href="mailto:oliver@puppycrawl.com">Oliver Burn</a>
  */
 class MyTableModel
-    extends AbstractTableModel
-{
+        extends AbstractTableModel {
 
-    /** used to log messages **/
+    /**
+     * used to log messages
+     **/
     private static final Logger LOG = Logger.getLogger(MyTableModel.class);
 
-    /** use the compare logging events **/
-    private static final Comparator MY_COMP = new Comparator()
-    {
+    /**
+     * use the compare logging events
+     **/
+    private static final Comparator MY_COMP = new Comparator() {
         /** @see Comparator **/
         public int compare(Object aObj1, Object aObj2) {
             if ((aObj1 == null) && (aObj2 == null)) {
@@ -64,16 +67,18 @@ class MyTableModel
             // assume not two events are logged at exactly the same time
             return -1;
         }
-        };
+    };
 
     /**
      * Helper that actually processes incoming events.
+     *
      * @author <a href="mailto:oliver@puppycrawl.com">Oliver Burn</a>
      */
     private class Processor
-        implements Runnable
-    {
-        /** loops getting the events **/
+            implements Runnable {
+        /**
+         * loops getting the events
+         **/
         public void run() {
             while (true) {
                 try {
@@ -108,43 +113,68 @@ class MyTableModel
     }
 
 
-    /** names of the columns in the table **/
+    /**
+     * names of the columns in the table
+     **/
     private static final String[] COL_NAMES = {
-        "Time", "Priority", "Trace", "Category", "NDC", "Message"};
+            "Time", "Priority", "Trace", "Category", "NDC", "Message"};
 
-    /** definition of an empty list **/
-    private static final EventDetails[] EMPTY_LIST =  new EventDetails[] {};
+    /**
+     * definition of an empty list
+     **/
+    private static final EventDetails[] EMPTY_LIST = new EventDetails[]{};
 
-    /** used to format dates **/
+    /**
+     * used to format dates
+     **/
     private static final DateFormat DATE_FORMATTER =
-        DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
+            DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
 
-    /** the lock to control access **/
+    /**
+     * the lock to control access
+     **/
     private final Object mLock = new Object();
-    /** set of all logged events - not filtered **/
+    /**
+     * set of all logged events - not filtered
+     **/
     private final SortedSet mAllEvents = new TreeSet(MY_COMP);
-    /** events that are visible after filtering **/
+    /**
+     * events that are visible after filtering
+     **/
     private EventDetails[] mFilteredEvents = EMPTY_LIST;
-    /** list of events that are buffered for processing **/
+    /**
+     * list of events that are buffered for processing
+     **/
     private final List mPendingEvents = new ArrayList();
-    /** indicates whether event collection is paused to the UI **/
+    /**
+     * indicates whether event collection is paused to the UI
+     **/
     private boolean mPaused = false;
 
-    /** filter for the thread **/
+    /**
+     * filter for the thread
+     **/
     private String mThreadFilter = "";
-    /** filter for the message **/
+    /**
+     * filter for the message
+     **/
     private String mMessageFilter = "";
-    /** filter for the NDC **/
+    /**
+     * filter for the NDC
+     **/
     private String mNDCFilter = "";
-    /** filter for the category **/
+    /**
+     * filter for the category
+     **/
     private String mCategoryFilter = "";
-    /** filter for the priority **/
+    /**
+     * filter for the priority
+     **/
     private Priority mPriorityFilter = Priority.DEBUG;
 
 
     /**
      * Creates a new <code>MyTableModel</code> instance.
-     *
      */
     MyTableModel() {
         final Thread t = new Thread(new Processor());
@@ -157,32 +187,42 @@ class MyTableModel
     // Table Methods
     ////////////////////////////////////////////////////////////////////////////
 
-    /** @see javax.swing.table.TableModel **/
+    /**
+     * @see javax.swing.table.TableModel
+     **/
     public int getRowCount() {
         synchronized (mLock) {
             return mFilteredEvents.length;
         }
     }
 
-    /** @see javax.swing.table.TableModel **/
+    /**
+     * @see javax.swing.table.TableModel
+     **/
     public int getColumnCount() {
         // does not need to be synchronized
         return COL_NAMES.length;
     }
 
-    /** @see javax.swing.table.TableModel **/
+    /**
+     * @see javax.swing.table.TableModel
+     **/
     public String getColumnName(int aCol) {
         // does not need to be synchronized
         return COL_NAMES[aCol];
     }
 
-    /** @see javax.swing.table.TableModel **/
+    /**
+     * @see javax.swing.table.TableModel
+     **/
     public Class getColumnClass(int aCol) {
         // does not need to be synchronized
         return (aCol == 2) ? Boolean.class : Object.class;
     }
 
-    /** @see javax.swing.table.TableModel **/
+    /**
+     * @see javax.swing.table.TableModel
+     **/
     public Object getValueAt(int aRow, int aCol) {
         synchronized (mLock) {
             final EventDetails event = mFilteredEvents[aRow];
@@ -193,7 +233,7 @@ class MyTableModel
                 return event.getPriority();
             } else if (aCol == 2) {
                 return (event.getThrowableStrRep() == null)
-                    ? Boolean.FALSE : Boolean.TRUE;
+                        ? Boolean.FALSE : Boolean.TRUE;
             } else if (aCol == 3) {
                 return event.getCategoryName();
             } else if (aCol == 4) {
@@ -291,14 +331,18 @@ class MyTableModel
         }
     }
 
-    /** Toggle whether collecting events **/
+    /**
+     * Toggle whether collecting events
+     **/
     public void toggle() {
         synchronized (mLock) {
             mPaused = !mPaused;
         }
     }
 
-    /** @return whether currently paused collecting events **/
+    /**
+     * @return whether currently paused collecting events
+     **/
     public boolean isPaused() {
         synchronized (mLock) {
             return mPaused;
@@ -323,9 +367,10 @@ class MyTableModel
 
     /**
      * Update the filtered events data structure.
+     *
      * @param aInsertedToFront indicates whether events were added to front of
-     *        the events. If true, then the current first event must still exist
-     *        in the list after the filter is applied.
+     *                         the events. If true, then the current first event must still exist
+     *                         in the list after the filter is applied.
      */
     private void updateFilteredEvents(boolean aInsertedToFront) {
         final long start = System.currentTimeMillis();
@@ -341,8 +386,8 @@ class MyTableModel
         }
 
         final EventDetails lastFirst = (mFilteredEvents.length == 0)
-            ? null
-            : mFilteredEvents[0];
+                ? null
+                : mFilteredEvents[0];
         mFilteredEvents = (EventDetails[]) filtered.toArray(EMPTY_LIST);
 
         if (aInsertedToFront && (lastFirst != null)) {
@@ -359,7 +404,7 @@ class MyTableModel
 
         final long end = System.currentTimeMillis();
         LOG.debug("Total time [ms]: " + (end - start)
-                  + " in update, size: " + size);
+                + " in update, size: " + size);
     }
 
     /**
@@ -370,12 +415,11 @@ class MyTableModel
      */
     private boolean matchFilter(EventDetails aEvent) {
         if (aEvent.getPriority().isGreaterOrEqual(mPriorityFilter) &&
-            (aEvent.getThreadName().indexOf(mThreadFilter) >= 0) &&
-            (aEvent.getCategoryName().indexOf(mCategoryFilter) >= 0) &&
-            ((mNDCFilter.length() == 0) ||
-             ((aEvent.getNDC() != null) &&
-              (aEvent.getNDC().indexOf(mNDCFilter) >= 0))))
-        {
+                (aEvent.getThreadName().indexOf(mThreadFilter) >= 0) &&
+                (aEvent.getCategoryName().indexOf(mCategoryFilter) >= 0) &&
+                ((mNDCFilter.length() == 0) ||
+                        ((aEvent.getNDC() != null) &&
+                                (aEvent.getNDC().indexOf(mNDCFilter) >= 0)))) {
             final String rm = aEvent.getMessage();
             if (rm == null) {
                 // only match if we have not filtering in place

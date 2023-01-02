@@ -56,8 +56,7 @@ public class ZeroConfSupport {
         this(zone, port, name, new HashMap());
     }
 
-    private static Object createJmDNSVersion1()
-    {
+    private static Object createJmDNSVersion1() {
         try {
             return jmDNSClass.newInstance();
         } catch (InstantiationException e) {
@@ -68,8 +67,7 @@ public class ZeroConfSupport {
         return null;
     }
 
-    private static Object createJmDNSVersion3()
-    {
+    private static Object createJmDNSVersion3() {
         try {
             Method jmDNSCreateMethod = jmDNSClass.getMethod("create", null);
             return jmDNSCreateMethod.invoke(null, null);
@@ -78,7 +76,7 @@ public class ZeroConfSupport {
         } catch (NoSuchMethodException e) {
             LogLog.warn("Unable to access constructor", e);
         } catch (InvocationTargetException e) {
-                LogLog.warn("Unable to call constructor", e);
+            LogLog.warn("Unable to call constructor", e);
         }
         return null;
     }
@@ -94,7 +92,7 @@ public class ZeroConfSupport {
             args[3] = int.class; //weight (0)
             args[4] = int.class; //priority (0)
             args[5] = Hashtable.class;
-            Constructor constructor  = serviceInfoClass.getConstructor(args);
+            Constructor constructor = serviceInfoClass.getConstructor(args);
             Object[] values = new Object[6];
             values[0] = zone;
             values[1] = name;
@@ -142,7 +140,7 @@ public class ZeroConfSupport {
         } catch (NoSuchMethodException e) {
             LogLog.warn("Unable to find create method", e);
         } catch (InvocationTargetException e) {
-                LogLog.warn("Unable to invoke create method", e);
+            LogLog.warn("Unable to invoke create method", e);
         }
         return null;
     }
@@ -152,11 +150,11 @@ public class ZeroConfSupport {
             Method method = jmDNSClass.getMethod("registerService", new Class[]{serviceInfoClass});
             method.invoke(jmDNS, new Object[]{serviceInfo});
             LogLog.debug("registered serviceInfo: " + serviceInfo);
-        } catch(IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             LogLog.warn("Unable to invoke registerService method", e);
-        } catch(NoSuchMethodException e) {
+        } catch (NoSuchMethodException e) {
             LogLog.warn("No registerService method", e);
-        } catch(InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
             LogLog.warn("Unable to invoke registerService method", e);
         }
     }
@@ -166,13 +164,13 @@ public class ZeroConfSupport {
             Method method = jmDNSClass.getMethod("unregisterService", new Class[]{serviceInfoClass});
             method.invoke(jmDNS, new Object[]{serviceInfo});
             LogLog.debug("unregistered serviceInfo: " + serviceInfo);
-        } catch(IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             LogLog.warn("Unable to invoke unregisterService method", e);
-        } catch(NoSuchMethodException e) {
+        } catch (NoSuchMethodException e) {
             LogLog.warn("No unregisterService method", e);
-        } catch(InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
             LogLog.warn("Unable to invoke unregisterService method", e);
-       }
+        }
     }
 
     private static Object initializeJMDNS() {

@@ -52,7 +52,7 @@ public final class EnhancedThrowableRenderer implements ThrowableRenderer {
             getStackTraceMethod = Throwable.class.getMethod("getStackTrace", noArgs);
             Class ste = Class.forName("java.lang.StackTraceElement");
             getClassNameMethod = ste.getMethod("getClassName", noArgs);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
         }
     }
 
@@ -67,11 +67,11 @@ public final class EnhancedThrowableRenderer implements ThrowableRenderer {
                 String[] lines = new String[elements.length + 1];
                 lines[0] = throwable.toString();
                 Map classMap = new HashMap();
-                for(int i = 0; i < elements.length; i++) {
-                    lines[i+1] = formatElement(elements[i], classMap);
+                for (int i = 0; i < elements.length; i++) {
+                    lines[i + 1] = formatElement(elements[i], classMap);
                 }
                 return lines;
-            } catch(Exception ex) {
+            } catch (Exception ex) {
             }
         }
         return DefaultThrowableRenderer.render(throwable);
@@ -79,7 +79,8 @@ public final class EnhancedThrowableRenderer implements ThrowableRenderer {
 
     /**
      * Format one element from stack trace.
-     * @param element element, may not be null.
+     *
+     * @param element  element, may not be null.
      * @param classMap map of class name to location.
      * @return string representation of element.
      */
@@ -129,7 +130,7 @@ public final class EnhancedThrowableRenderer implements ThrowableRenderer {
                             }
                         }
                     }
-                } catch(SecurityException ex) {
+                } catch (SecurityException ex) {
                 }
                 buf.append(':');
                 Package pkg = cls.getPackage();
@@ -142,27 +143,28 @@ public final class EnhancedThrowableRenderer implements ThrowableRenderer {
                 buf.append(']');
                 classMap.put(className, buf.substring(detailStart));
             }
-        } catch(Exception ex) {
+        } catch (Exception ex) {
         }
         return buf.toString();
     }
 
     /**
      * Find class given class name.
+     *
      * @param className class name, may not be null.
      * @return class, will not be null.
      * @throws ClassNotFoundException thrown if class can not be found.
      */
     private Class findClass(final String className) throws ClassNotFoundException {
-     try {
-       return Thread.currentThread().getContextClassLoader().loadClass(className);
-     } catch (ClassNotFoundException e) {
-       try {
-         return Class.forName(className);
-       } catch (ClassNotFoundException e1) {
-          return getClass().getClassLoader().loadClass(className);
-      }
+        try {
+            return Thread.currentThread().getContextClassLoader().loadClass(className);
+        } catch (ClassNotFoundException e) {
+            try {
+                return Class.forName(className);
+            } catch (ClassNotFoundException e1) {
+                return getClass().getClassLoader().loadClass(className);
+            }
+        }
     }
-  }
 
 }

@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.apache.log4j.Level;
@@ -38,9 +39,11 @@ import org.apache.log4j.Level;
  * @author <a href="mailto:oliver@puppycrawl.com">Oliver Burn</a>
  */
 class ControlPanel extends JPanel {
-    /** use the log messages **/
-    private static final Logger LOG = 
-                                  Logger.getLogger(ControlPanel.class);
+    /**
+     * use the log messages
+     **/
+    private static final Logger LOG =
+            Logger.getLogger(ControlPanel.class);
 
     /**
      * Creates a new <code>ControlPanel</code> instance.
@@ -93,13 +96,13 @@ class ControlPanel extends JPanel {
         c.anchor = GridBagConstraints.WEST;
 
         c.gridy = 0;
-        final Level[] allPriorities = new Level[] {Level.FATAL, 
-               Level.ERROR, 
-               Level.WARN, 
-			   Level.INFO, 
-			   Level.DEBUG, 
-			   Level.TRACE };
-        
+        final Level[] allPriorities = new Level[]{Level.FATAL,
+                Level.ERROR,
+                Level.WARN,
+                Level.INFO,
+                Level.DEBUG,
+                Level.TRACE};
+
         final JComboBox priorities = new JComboBox(allPriorities);
         final Level lowest = allPriorities[allPriorities.length - 1];
         priorities.setSelectedItem(lowest);
@@ -108,75 +111,83 @@ class ControlPanel extends JPanel {
         add(priorities);
         priorities.setEditable(false);
         priorities.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent aEvent) {
-                    aModel.setPriorityFilter(
+            public void actionPerformed(ActionEvent aEvent) {
+                aModel.setPriorityFilter(
                         (Priority) priorities.getSelectedItem());
-                }
-            });
+            }
+        });
 
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridy++;
         final JTextField threadField = new JTextField("");
-        threadField.getDocument().addDocumentListener(new DocumentListener () {
-                public void insertUpdate(DocumentEvent aEvent) {
-                    aModel.setThreadFilter(threadField.getText());
-                }
-                public void removeUpdate(DocumentEvent aEvente) {
-                    aModel.setThreadFilter(threadField.getText());
-                }
-                public void changedUpdate(DocumentEvent aEvent) {
-                    aModel.setThreadFilter(threadField.getText());
-                }
-            });
+        threadField.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent aEvent) {
+                aModel.setThreadFilter(threadField.getText());
+            }
+
+            public void removeUpdate(DocumentEvent aEvente) {
+                aModel.setThreadFilter(threadField.getText());
+            }
+
+            public void changedUpdate(DocumentEvent aEvent) {
+                aModel.setThreadFilter(threadField.getText());
+            }
+        });
         gridbag.setConstraints(threadField, c);
         add(threadField);
 
         c.gridy++;
         final JTextField catField = new JTextField("");
-        catField.getDocument().addDocumentListener(new DocumentListener () {
-                public void insertUpdate(DocumentEvent aEvent) {
-                    aModel.setCategoryFilter(catField.getText());
-                }
-                public void removeUpdate(DocumentEvent aEvent) {
-                    aModel.setCategoryFilter(catField.getText());
-                }
-                public void changedUpdate(DocumentEvent aEvent) {
-                    aModel.setCategoryFilter(catField.getText());
-                }
-            });
+        catField.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent aEvent) {
+                aModel.setCategoryFilter(catField.getText());
+            }
+
+            public void removeUpdate(DocumentEvent aEvent) {
+                aModel.setCategoryFilter(catField.getText());
+            }
+
+            public void changedUpdate(DocumentEvent aEvent) {
+                aModel.setCategoryFilter(catField.getText());
+            }
+        });
         gridbag.setConstraints(catField, c);
         add(catField);
 
         c.gridy++;
         final JTextField ndcField = new JTextField("");
-        ndcField.getDocument().addDocumentListener(new DocumentListener () {
-                public void insertUpdate(DocumentEvent aEvent) {
-                    aModel.setNDCFilter(ndcField.getText());
-                }
-                public void removeUpdate(DocumentEvent aEvent) {
-                    aModel.setNDCFilter(ndcField.getText());
-                }
-                public void changedUpdate(DocumentEvent aEvent) {
-                    aModel.setNDCFilter(ndcField.getText());
-                }
-            });
+        ndcField.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent aEvent) {
+                aModel.setNDCFilter(ndcField.getText());
+            }
+
+            public void removeUpdate(DocumentEvent aEvent) {
+                aModel.setNDCFilter(ndcField.getText());
+            }
+
+            public void changedUpdate(DocumentEvent aEvent) {
+                aModel.setNDCFilter(ndcField.getText());
+            }
+        });
         gridbag.setConstraints(ndcField, c);
         add(ndcField);
 
         c.gridy++;
         final JTextField msgField = new JTextField("");
-        msgField.getDocument().addDocumentListener(new DocumentListener () {
-                public void insertUpdate(DocumentEvent aEvent) {
-                    aModel.setMessageFilter(msgField.getText());
-                }
-                public void removeUpdate(DocumentEvent aEvent) {
-                    aModel.setMessageFilter(msgField.getText());
-                }
-                public void changedUpdate(DocumentEvent aEvent) {
-                    aModel.setMessageFilter(msgField.getText());
-                }
-            });
+        msgField.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent aEvent) {
+                aModel.setMessageFilter(msgField.getText());
+            }
+
+            public void removeUpdate(DocumentEvent aEvent) {
+                aModel.setMessageFilter(msgField.getText());
+            }
+
+            public void changedUpdate(DocumentEvent aEvent) {
+                aModel.setMessageFilter(msgField.getText());
+            }
+        });
 
 
         gridbag.setConstraints(msgField, c);
@@ -199,10 +210,10 @@ class ControlPanel extends JPanel {
         final JButton clearButton = new JButton("Clear");
         clearButton.setMnemonic('c');
         clearButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent aEvent) {
-                    aModel.clear();
-                }
-            });
+            public void actionPerformed(ActionEvent aEvent) {
+                aModel.clear();
+            }
+        });
         gridbag.setConstraints(clearButton, c);
         add(clearButton);
 
@@ -210,12 +221,12 @@ class ControlPanel extends JPanel {
         final JButton toggleButton = new JButton("Pause");
         toggleButton.setMnemonic('p');
         toggleButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent aEvent) {
-                    aModel.toggle();
-                    toggleButton.setText(
+            public void actionPerformed(ActionEvent aEvent) {
+                aModel.toggle();
+                toggleButton.setText(
                         aModel.isPaused() ? "Resume" : "Pause");
-                }
-            });
+            }
+        });
         gridbag.setConstraints(toggleButton, c);
         add(toggleButton);
     }

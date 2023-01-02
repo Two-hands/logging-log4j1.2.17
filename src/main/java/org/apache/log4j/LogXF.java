@@ -21,7 +21,6 @@ import org.apache.log4j.spi.LoggingEvent;
 /**
  * This is a base class for LogMF and LogSF parameterized logging classes.
  *
- *
  * @see org.apache.log4j.LogMF
  * @see org.apache.log4j.LogSF
  * @since 1.2.16
@@ -244,7 +243,7 @@ public abstract class LogXF {
             } else {
                 try {
                     msg += param;
-                } catch(Throwable ex) {
+                } catch (Throwable ex) {
                     msg += "?";
                 }
             }
@@ -272,7 +271,7 @@ public abstract class LogXF {
                 for (int i = 0; i < params.length; i++) {
                     try {
                         msg += delim + params[i];
-                    } catch(Throwable ex) {
+                    } catch (Throwable ex) {
                         msg += delim + "?";
                     }
                     delim = ",";
@@ -341,7 +340,7 @@ public abstract class LogXF {
             } else {
                 try {
                     msg += result;
-                } catch(Throwable ex) {
+                } catch (Throwable ex) {
                     msg += "?";
                 }
             }
@@ -356,7 +355,7 @@ public abstract class LogXF {
      * @param logger       logger, may not be null.
      * @param sourceClass  source class, may be null.
      * @param sourceMethod method, may be null.
-     * @param thrown      throwable, may be null.
+     * @param thrown       throwable, may be null.
      */
     public static void throwing(
             final Logger logger,

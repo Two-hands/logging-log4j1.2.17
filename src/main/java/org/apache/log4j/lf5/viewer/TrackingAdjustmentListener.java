@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,52 +35,52 @@ import java.awt.event.AdjustmentListener;
 // Contributed by ThoughtWorks Inc.
 
 public class TrackingAdjustmentListener implements AdjustmentListener {
-  //--------------------------------------------------------------------------
-  //   Constants:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Constants:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Protected Variables:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Protected Variables:
+    //--------------------------------------------------------------------------
 
-  protected int _lastMaximum = -1;
+    protected int _lastMaximum = -1;
 
-  //--------------------------------------------------------------------------
-  //   Private Variables:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Private Variables:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Constructors:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Constructors:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Public Methods:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Public Methods:
+    //--------------------------------------------------------------------------
 
-  public void adjustmentValueChanged(AdjustmentEvent e) {
-    Adjustable bar = e.getAdjustable();
-    int currentMaximum = bar.getMaximum();
-    if (bar.getMaximum() == _lastMaximum) {
-      return; // nothing to do, the adjustable has not expanded
+    public void adjustmentValueChanged(AdjustmentEvent e) {
+        Adjustable bar = e.getAdjustable();
+        int currentMaximum = bar.getMaximum();
+        if (bar.getMaximum() == _lastMaximum) {
+            return; // nothing to do, the adjustable has not expanded
+        }
+        int bottom = bar.getValue() + bar.getVisibleAmount();
+
+        if (bottom + bar.getUnitIncrement() >= _lastMaximum) {
+            bar.setValue(bar.getMaximum()); // use the most recent maximum
+        }
+        _lastMaximum = currentMaximum;
     }
-    int bottom = bar.getValue() + bar.getVisibleAmount();
 
-    if (bottom + bar.getUnitIncrement() >= _lastMaximum) {
-      bar.setValue(bar.getMaximum()); // use the most recent maximum
-    }
-    _lastMaximum = currentMaximum;
-  }
+    //--------------------------------------------------------------------------
+    //   Protected Methods:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Protected Methods:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Private Methods:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Private Methods:
-  //--------------------------------------------------------------------------
-
-  //--------------------------------------------------------------------------
-  //   Nested Top-Level Classes or Interfaces
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Nested Top-Level Classes or Interfaces
+    //--------------------------------------------------------------------------
 }
 

@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,69 +36,69 @@ import org.apache.log4j.lf5.LogRecord;
 // Contributed by ThoughtWorks Inc.
 
 public class LogTableRowRenderer extends DefaultTableCellRenderer {
-  private static final long serialVersionUID = -3951639953706443213L;
-  //--------------------------------------------------------------------------
-  //   Constants:
-  //--------------------------------------------------------------------------
+    private static final long serialVersionUID = -3951639953706443213L;
+    //--------------------------------------------------------------------------
+    //   Constants:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Protected Variables:
-  //--------------------------------------------------------------------------
-  protected boolean _highlightFatal = true;
-  protected Color _color = new Color(230, 230, 230);
+    //--------------------------------------------------------------------------
+    //   Protected Variables:
+    //--------------------------------------------------------------------------
+    protected boolean _highlightFatal = true;
+    protected Color _color = new Color(230, 230, 230);
 
-  //--------------------------------------------------------------------------
-  //   Private Variables:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Private Variables:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Constructors:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Constructors:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Public Methods:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Public Methods:
+    //--------------------------------------------------------------------------
 
-  public Component getTableCellRendererComponent(JTable table,
-      Object value,
-      boolean isSelected,
-      boolean hasFocus,
-      int row,
-      int col) {
+    public Component getTableCellRendererComponent(JTable table,
+                                                   Object value,
+                                                   boolean isSelected,
+                                                   boolean hasFocus,
+                                                   int row,
+                                                   int col) {
 
-    if ((row % 2) == 0) {
-      setBackground(_color);
-    } else {
-      setBackground(Color.white);
+        if ((row % 2) == 0) {
+            setBackground(_color);
+        } else {
+            setBackground(Color.white);
+        }
+
+        FilteredLogTableModel model = (FilteredLogTableModel) table.getModel();
+        LogRecord record = model.getFilteredRecord(row);
+
+        setForeground(getLogLevelColor(record.getLevel()));
+
+        return (super.getTableCellRendererComponent(table,
+                value,
+                isSelected,
+                hasFocus,
+                row, col));
     }
 
-    FilteredLogTableModel model = (FilteredLogTableModel) table.getModel();
-    LogRecord record = model.getFilteredRecord(row);
 
-    setForeground(getLogLevelColor(record.getLevel()));
+    //--------------------------------------------------------------------------
+    //   Protected Methods:
+    //--------------------------------------------------------------------------
+    protected Color getLogLevelColor(LogLevel level) {
+        return (Color) LogLevel.getLogLevelColorMap().get(level);
+    }
 
-    return (super.getTableCellRendererComponent(table,
-        value,
-        isSelected,
-        hasFocus,
-        row, col));
-  }
+    //--------------------------------------------------------------------------
+    //   Private Methods:
+    //--------------------------------------------------------------------------
 
-
-  //--------------------------------------------------------------------------
-  //   Protected Methods:
-  //--------------------------------------------------------------------------
-  protected Color getLogLevelColor(LogLevel level) {
-    return (Color) LogLevel.getLogLevelColorMap().get(level);
-  }
-
-  //--------------------------------------------------------------------------
-  //   Private Methods:
-  //--------------------------------------------------------------------------
-
-  //--------------------------------------------------------------------------
-  //   Nested Top-Level Classes or Interfaces:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Nested Top-Level Classes or Interfaces:
+    //--------------------------------------------------------------------------
 
 }
 

@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,18 +23,18 @@ import java.io.IOException;
 /**
  * This class is a simple example of how to use the LogFactor5 logging
  * window.
- *
+ * <p>
  * The LF5Appender is the primary class that enables logging to the
  * LogFactor5 logging window. The simplest method of using this Appender
  * is to add the following line to your log4j.properties file:
- *
- *    log4j.appender.A1=org.apache.log4j.lf5.LF5Appender
- *
+ * <p>
+ * log4j.appender.A1=org.apache.log4j.lf5.LF5Appender
+ * <p>
  * The log4j.properties file MUST be in you system classpath. If this file
  * is in your system classpath, a static initializer in the Category class
  * will load the file during class initialization. The LF5Appender will be
  * added to the root category of the Category tree.
- *
+ * <p>
  * Create a log4j.properties file and add this line to it, or add this line
  * to your existing log4j.properties file. Run the example at the command line
  * and explore the results!

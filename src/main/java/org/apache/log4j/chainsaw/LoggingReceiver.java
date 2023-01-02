@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,7 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 
@@ -32,7 +33,9 @@ import org.apache.log4j.spi.LoggingEvent;
  * @author <a href="mailto:oliver@puppycrawl.com">Oliver Burn</a>
  */
 class LoggingReceiver extends Thread {
-    /** used to log messages **/
+    /**
+     * used to log messages
+     **/
     private static final Logger LOG = Logger.getLogger(LoggingReceiver.class);
 
     /**
@@ -42,7 +45,9 @@ class LoggingReceiver extends Thread {
      * @author <a href="mailto:oliver@puppycrawl.com">Oliver Burn</a>
      */
     private class Slurper implements Runnable {
-        /** socket connection to read events from **/
+        /**
+         * socket connection to read events from
+         **/
         private final Socket mClient;
 
         /**
@@ -54,12 +59,14 @@ class LoggingReceiver extends Thread {
             mClient = aClient;
         }
 
-        /** loops getting the events **/
+        /**
+         * loops getting the events
+         **/
         public void run() {
             LOG.debug("Starting to get data");
             try {
                 final ObjectInputStream ois =
-                    new ObjectInputStream(mClient.getInputStream());
+                        new ObjectInputStream(mClient.getInputStream());
                 while (true) {
                     final LoggingEvent event = (LoggingEvent) ois.readObject();
                     mModel.addEvent(new EventDetails(event));
@@ -82,17 +89,21 @@ class LoggingReceiver extends Thread {
         }
     }
 
-    /** where to put the events **/
+    /**
+     * where to put the events
+     **/
     private MyTableModel mModel;
 
-    /** server for listening for connections **/
+    /**
+     * server for listening for connections
+     **/
     private ServerSocket mSvrSock;
-    
+
     /**
      * Creates a new <code>LoggingReceiver</code> instance.
      *
      * @param aModel model to place put received into
-     * @param aPort port to listen on
+     * @param aPort  port to listen on
      * @throws IOException if an error occurs
      */
     LoggingReceiver(MyTableModel aModel, int aPort) throws IOException {
@@ -101,7 +112,9 @@ class LoggingReceiver extends Thread {
         mSvrSock = new ServerSocket(aPort);
     }
 
-    /** Listens for client connections **/
+    /**
+     * Listens for client connections
+     **/
     public void run() {
         LOG.info("Thread started");
         try {
@@ -109,7 +122,7 @@ class LoggingReceiver extends Thread {
                 LOG.debug("Waiting for a connection");
                 final Socket client = mSvrSock.accept();
                 LOG.debug("Got a connection from " +
-                          client.getInetAddress().getHostName());
+                        client.getInetAddress().getHostName());
                 final Thread t = new Thread(new Slurper(client));
                 t.setDaemon(true);
                 t.start();

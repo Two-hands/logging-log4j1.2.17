@@ -29,23 +29,21 @@ import java.util.Locale;
 /**
  * This class provides parameterized logging services
  * using the pattern syntax of java.text.MessageFormat.
- * Message formatting is only performed when the 
+ * Message formatting is only performed when the
  * request exceeds the threshold level of the logger.
  * When the pattern only contains literal text and
  * default conversion patterns (that is "{0}" and similar)
- * a simple fast compatible formatter is used.  
+ * a simple fast compatible formatter is used.
  * If the pattern contains more complex conversion patterns,
  * formatting will be delegated to java.text.MessageFormatter
  * which can be substantially slower.
  *
  * @see org.apache.log4j.LogSF
  * @since 1.2.16
- *
  */
 public final class LogMF extends LogXF {
     /**
      * private constructor.
-     *
      */
     private LogMF() {
     }
@@ -69,6 +67,7 @@ public final class LogMF extends LogXF {
 
     /**
      * Format number.
+     *
      * @param n number to format, may not be null.
      * @return formatted value.
      */
@@ -84,6 +83,7 @@ public final class LogMF extends LogXF {
 
     /**
      * Format date.
+     *
      * @param d date, may not be null.
      * @return formatted value.
      */
@@ -92,9 +92,9 @@ public final class LogMF extends LogXF {
         if (currentLocale != dateLocale || dateFormat == null) {
             dateLocale = currentLocale;
             dateFormat = DateFormat.getDateTimeInstance(
-                                DateFormat.SHORT,
-                                DateFormat.SHORT,
-                                currentLocale);
+                    DateFormat.SHORT,
+                    DateFormat.SHORT,
+                    currentLocale);
         }
         return dateFormat.format(d);
     }
@@ -109,8 +109,8 @@ public final class LogMF extends LogXF {
         if (arg0 instanceof String) {
             return arg0.toString();
         } else if (arg0 instanceof Double ||
-                   arg0 instanceof Float) {
-           return formatNumber(arg0);
+                arg0 instanceof Float) {
+            return formatNumber(arg0);
         } else if (arg0 instanceof Date) {
             return formatDate(arg0);
         }
@@ -129,13 +129,13 @@ public final class LogMF extends LogXF {
         if (pattern.indexOf('\'') != -1) {
             return false;
         }
-        for(int pos = pattern.indexOf('{');
-            pos != -1;
-            pos = pattern.indexOf('{', pos + 1)) {
+        for (int pos = pattern.indexOf('{');
+             pos != -1;
+             pos = pattern.indexOf('{', pos + 1)) {
             if (pos + 2 >= pattern.length() ||
-                    pattern.charAt(pos+2) != '}' ||
-                    pattern.charAt(pos+1) < '0' ||
-                    pattern.charAt(pos+1) > '9') {
+                    pattern.charAt(pos + 2) != '}' ||
+                    pattern.charAt(pos + 1) < '0' ||
+                    pattern.charAt(pos + 1) > '9') {
                 return false;
             }
         }
@@ -145,7 +145,8 @@ public final class LogMF extends LogXF {
 
     /**
      * Formats arguments using MessageFormat.
-     * @param pattern pattern, may be malformed or null.
+     *
+     * @param pattern   pattern, may be malformed or null.
      * @param arguments arguments, may be null or mismatched.
      * @return Message string or null
      */
@@ -153,24 +154,24 @@ public final class LogMF extends LogXF {
                                  final Object[] arguments) {
         if (pattern == null) {
             return null;
-        } else if(isSimple(pattern)) {
+        } else if (isSimple(pattern)) {
             String formatted[] = new String[10];
             int prev = 0;
             String retval = "";
             int pos = pattern.indexOf('{');
-            while(pos >= 0) {
-                if(pos + 2 < pattern.length() && 
-                      pattern.charAt(pos+2) == '}' &&
-                      pattern.charAt(pos+1) >= '0' &&
-                      pattern.charAt(pos+1) <= '9') {
-                    int index = pattern.charAt(pos+1) - '0';
+            while (pos >= 0) {
+                if (pos + 2 < pattern.length() &&
+                        pattern.charAt(pos + 2) == '}' &&
+                        pattern.charAt(pos + 1) >= '0' &&
+                        pattern.charAt(pos + 1) <= '9') {
+                    int index = pattern.charAt(pos + 1) - '0';
                     retval += pattern.substring(prev, pos);
                     if (formatted[index] == null) {
-                         if (arguments == null || index >= arguments.length) {
-                            formatted[index] = pattern.substring(pos, pos+3);
-                         } else {
+                        if (arguments == null || index >= arguments.length) {
+                            formatted[index] = pattern.substring(pos, pos + 3);
+                        } else {
                             formatted[index] = formatObject(arguments[index]);
-                         }
+                        }
                     }
                     retval += formatted[index];
                     prev = pos + 3;
@@ -191,7 +192,8 @@ public final class LogMF extends LogXF {
 
     /**
      * Formats a single argument using MessageFormat.
-     * @param pattern pattern, may be malformed or null.
+     *
+     * @param pattern   pattern, may be malformed or null.
      * @param arguments arguments, may be null or mismatched.
      * @return Message string or null
      */
@@ -199,20 +201,20 @@ public final class LogMF extends LogXF {
                                  final Object arg0) {
         if (pattern == null) {
             return null;
-        } else if(isSimple(pattern)) {
+        } else if (isSimple(pattern)) {
             String formatted = null;
             int prev = 0;
             String retval = "";
             int pos = pattern.indexOf('{');
-            while(pos >= 0) {
-                if(pos + 2 < pattern.length() &&
-                      pattern.charAt(pos+2) == '}' &&
-                      pattern.charAt(pos+1) >= '0' &&
-                      pattern.charAt(pos+1) <= '9') {
-                    int index = pattern.charAt(pos+1) - '0';
+            while (pos >= 0) {
+                if (pos + 2 < pattern.length() &&
+                        pattern.charAt(pos + 2) == '}' &&
+                        pattern.charAt(pos + 1) >= '0' &&
+                        pattern.charAt(pos + 1) <= '9') {
+                    int index = pattern.charAt(pos + 1) - '0';
                     retval += pattern.substring(prev, pos);
                     if (index != 0) {
-                        retval += pattern.substring(pos, pos+3);
+                        retval += pattern.substring(pos, pos + 3);
                     } else {
                         if (formatted == null) {
                             formatted = formatObject(arg0);
@@ -229,7 +231,7 @@ public final class LogMF extends LogXF {
             return retval;
         }
         try {
-            return MessageFormat.format(pattern, new Object[] { arg0 });
+            return MessageFormat.format(pattern, new Object[]{arg0});
         } catch (IllegalArgumentException ex) {
             return pattern;
         }
@@ -239,9 +241,10 @@ public final class LogMF extends LogXF {
     /**
      * Formats arguments using MessageFormat using a pattern from
      * a resource bundle.
+     *
      * @param resourceBundleName name of resource bundle, may be null.
-     * @param key key for pattern in resource bundle, may be null.
-     * @param arguments arguments, may be null or mismatched.
+     * @param key                key for pattern in resource bundle, may be null.
+     * @param arguments          arguments, may be null or mismatched.
      * @return Message string or null
      */
     private static String format(
@@ -273,8 +276,8 @@ public final class LogMF extends LogXF {
      * Equivalent of Logger.forcedLog.
      *
      * @param logger logger, may not be null.
-     * @param level level, may not be null.
-     * @param msg message, may be null.
+     * @param level  level, may not be null.
+     * @param msg    message, may be null.
      */
     private static void forcedLog(final Logger logger,
                                   final Level level,
@@ -286,9 +289,9 @@ public final class LogMF extends LogXF {
      * Equivalent of Logger.forcedLog.
      *
      * @param logger logger, may not be null.
-     * @param level level, may not be null.
-     * @param msg message, may be null.
-     * @param t throwable.
+     * @param level  level, may not be null.
+     * @param msg    message, may be null.
+     * @param t      throwable.
      */
     private static void forcedLog(final Logger logger,
                                   final Level level,
@@ -296,15 +299,17 @@ public final class LogMF extends LogXF {
                                   final Throwable t) {
         logger.callAppenders(new LoggingEvent(FQCN, logger, level, msg, t));
     }
+
     /**
-         * Log a parameterized message at trace level.
-         * @param logger logger, may not be null.
-         * @param pattern pattern, may be null.
-         * @param arguments an array of arguments to be
-         *          formatted and substituted.
-         */
+     * Log a parameterized message at trace level.
+     *
+     * @param logger    logger, may not be null.
+     * @param pattern   pattern, may be null.
+     * @param arguments an array of arguments to be
+     *                  formatted and substituted.
+     */
     public static void trace(final Logger logger, final String pattern,
-        final Object[] arguments) {
+                             final Object[] arguments) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE, format(pattern, arguments));
         }
@@ -312,12 +317,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger    logger, may not be null.
+     * @param pattern   pattern, may be null.
      * @param arguments an array of arguments to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final Object[] arguments) {
+                             final Object[] arguments) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG, format(pattern, arguments));
         }
@@ -325,12 +331,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger    logger, may not be null.
+     * @param pattern   pattern, may be null.
      * @param arguments an array of arguments to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final Object[] arguments) {
+                            final Object[] arguments) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, arguments));
         }
@@ -338,12 +345,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger    logger, may not be null.
+     * @param pattern   pattern, may be null.
      * @param arguments an array of arguments to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final Object[] arguments) {
+                            final Object[] arguments) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern, arguments));
         }
@@ -351,12 +359,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at error level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger    logger, may not be null.
+     * @param pattern   pattern, may be null.
      * @param arguments an array of arguments to be formatted and substituted.
      */
     public static void error(final Logger logger, final String pattern,
-        final Object[] arguments) {
+                             final Object[] arguments) {
         if (logger.isEnabledFor(Level.ERROR)) {
             forcedLog(logger, Level.ERROR, format(pattern, arguments));
         }
@@ -364,29 +373,31 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at fatal level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger    logger, may not be null.
+     * @param pattern   pattern, may be null.
      * @param arguments an array of arguments to be formatted and substituted.
      */
     public static void fatal(final Logger logger, final String pattern,
-        final Object[] arguments) {
+                             final Object[] arguments) {
         if (logger.isEnabledFor(Level.FATAL)) {
             forcedLog(logger, Level.FATAL, format(pattern, arguments));
         }
     }
 
     /**
-         * Log a parameterized message at trace level.
-         * @param logger logger, may not be null.
-         * @param t throwable, may be null.
-         * @param pattern pattern, may be null.
-         * @param arguments an array of arguments to be
-         *          formatted and substituted.
-         */
+     * Log a parameterized message at trace level.
+     *
+     * @param logger    logger, may not be null.
+     * @param t         throwable, may be null.
+     * @param pattern   pattern, may be null.
+     * @param arguments an array of arguments to be
+     *                  formatted and substituted.
+     */
     public static void trace(final Logger logger,
                              final Throwable t,
                              final String pattern,
-        final Object[] arguments) {
+                             final Object[] arguments) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE, format(pattern, arguments), t);
         }
@@ -394,15 +405,16 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
-     * @param t throwable, may be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger    logger, may not be null.
+     * @param t         throwable, may be null.
+     * @param pattern   pattern, may be null.
      * @param arguments an array of arguments to be formatted and substituted.
      */
     public static void debug(final Logger logger,
                              final Throwable t,
                              final String pattern,
-        final Object[] arguments) {
+                             final Object[] arguments) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG, format(pattern, arguments), t);
         }
@@ -410,15 +422,16 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
-     * @param t throwable, may be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger    logger, may not be null.
+     * @param t         throwable, may be null.
+     * @param pattern   pattern, may be null.
      * @param arguments an array of arguments to be formatted and substituted.
      */
     public static void info(final Logger logger,
                             final Throwable t,
                             final String pattern,
-        final Object[] arguments) {
+                            final Object[] arguments) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, arguments), t);
         }
@@ -426,15 +439,16 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
-     * @param t throwable, may be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger    logger, may not be null.
+     * @param t         throwable, may be null.
+     * @param pattern   pattern, may be null.
      * @param arguments an array of arguments to be formatted and substituted.
      */
     public static void warn(final Logger logger,
                             final Throwable t,
                             final String pattern,
-        final Object[] arguments) {
+                            final Object[] arguments) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern, arguments), t);
         }
@@ -442,15 +456,16 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at error level.
-     * @param logger logger, may not be null.
-     * @param t throwable, may be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger    logger, may not be null.
+     * @param t         throwable, may be null.
+     * @param pattern   pattern, may be null.
      * @param arguments an array of arguments to be formatted and substituted.
      */
     public static void error(final Logger logger,
                              final Throwable t,
                              final String pattern,
-        final Object[] arguments) {
+                             final Object[] arguments) {
         if (logger.isEnabledFor(Level.ERROR)) {
             forcedLog(logger, Level.ERROR, format(pattern, arguments), t);
         }
@@ -458,30 +473,31 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at fatal level.
-     * @param logger logger, may not be null.
-     * @param t throwable, may be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger    logger, may not be null.
+     * @param t         throwable, may be null.
+     * @param pattern   pattern, may be null.
      * @param arguments an array of arguments to be formatted and substituted.
      */
     public static void fatal(final Logger logger,
                              final Throwable t,
                              final String pattern,
-        final Object[] arguments) {
+                             final Object[] arguments) {
         if (logger.isEnabledFor(Level.FATAL)) {
             forcedLog(logger, Level.FATAL, format(pattern, arguments), t);
         }
     }
 
 
-
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final boolean argument) {
+                             final boolean argument) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE, format(pattern, valueOf(argument)));
         }
@@ -489,12 +505,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final char argument) {
+                             final char argument) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE, format(pattern, valueOf(argument)));
         }
@@ -502,12 +519,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final byte argument) {
+                             final byte argument) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE, format(pattern, valueOf(argument)));
         }
@@ -515,12 +533,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final short argument) {
+                             final short argument) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE, format(pattern, valueOf(argument)));
         }
@@ -528,12 +547,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final int argument) {
+                             final int argument) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE, format(pattern, valueOf(argument)));
         }
@@ -541,12 +561,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final long argument) {
+                             final long argument) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE, format(pattern, valueOf(argument)));
         }
@@ -554,12 +575,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final float argument) {
+                             final float argument) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE, format(pattern, valueOf(argument)));
         }
@@ -567,12 +589,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final double argument) {
+                             final double argument) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE, format(pattern, valueOf(argument)));
         }
@@ -580,12 +603,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final Object argument) {
+                             final Object argument) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE, format(pattern, argument));
         }
@@ -593,13 +617,14 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1) {
+                             final Object arg0, final Object arg1) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE,
                     format(pattern, toArray(arg0, arg1)));
@@ -608,14 +633,15 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
-     * @param arg2 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
+     * @param arg2    a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1, final Object arg2) {
+                             final Object arg0, final Object arg1, final Object arg2) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE,
                     format(pattern, toArray(arg0, arg1, arg2)));
@@ -624,16 +650,17 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at trace level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
-     * @param arg2 a value to be formatted and substituted.
-     * @param arg3 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
+     * @param arg2    a value to be formatted and substituted.
+     * @param arg3    a value to be formatted and substituted.
      */
     public static void trace(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1, final Object arg2,
-        final Object arg3) {
+                             final Object arg0, final Object arg1, final Object arg2,
+                             final Object arg3) {
         if (logger.isEnabledFor(TRACE)) {
             forcedLog(logger, TRACE,
                     format(pattern, toArray(arg0, arg1, arg2, arg3)));
@@ -642,12 +669,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final boolean argument) {
+                             final boolean argument) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG, format(pattern, valueOf(argument)));
         }
@@ -655,12 +683,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final char argument) {
+                             final char argument) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG, format(pattern, valueOf(argument)));
         }
@@ -668,12 +697,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final byte argument) {
+                             final byte argument) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG, format(pattern, valueOf(argument)));
         }
@@ -681,12 +711,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final short argument) {
+                             final short argument) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG, format(pattern, valueOf(argument)));
         }
@@ -694,12 +725,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final int argument) {
+                             final int argument) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG, format(pattern, valueOf(argument)));
         }
@@ -707,12 +739,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final long argument) {
+                             final long argument) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG, format(pattern, valueOf(argument)));
         }
@@ -720,12 +753,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final float argument) {
+                             final float argument) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG, format(pattern, valueOf(argument)));
         }
@@ -733,12 +767,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final double argument) {
+                             final double argument) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG, format(pattern, valueOf(argument)));
         }
@@ -746,12 +781,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final Object argument) {
+                             final Object argument) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG, format(pattern, argument));
         }
@@ -759,13 +795,14 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1) {
+                             final Object arg0, final Object arg1) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG,
                     format(pattern, toArray(arg0, arg1)));
@@ -774,14 +811,15 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
-     * @param arg2 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
+     * @param arg2    a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1, final Object arg2) {
+                             final Object arg0, final Object arg1, final Object arg2) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG,
                     format(pattern, toArray(arg0, arg1, arg2)));
@@ -790,16 +828,17 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at debug level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
-     * @param arg2 a value to be formatted and substituted.
-     * @param arg3 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
+     * @param arg2    a value to be formatted and substituted.
+     * @param arg3    a value to be formatted and substituted.
      */
     public static void debug(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1, final Object arg2,
-        final Object arg3) {
+                             final Object arg0, final Object arg1, final Object arg2,
+                             final Object arg3) {
         if (logger.isDebugEnabled()) {
             forcedLog(logger, Level.DEBUG,
                     format(pattern, toArray(arg0, arg1, arg2, arg3)));
@@ -808,12 +847,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final boolean argument) {
+                            final boolean argument) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, valueOf(argument)));
         }
@@ -821,12 +861,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final char argument) {
+                            final char argument) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, valueOf(argument)));
         }
@@ -834,12 +875,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final byte argument) {
+                            final byte argument) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, valueOf(argument)));
         }
@@ -847,12 +889,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final short argument) {
+                            final short argument) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, valueOf(argument)));
         }
@@ -860,12 +903,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final int argument) {
+                            final int argument) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, valueOf(argument)));
         }
@@ -873,12 +917,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final long argument) {
+                            final long argument) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, valueOf(argument)));
         }
@@ -886,12 +931,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final float argument) {
+                            final float argument) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, valueOf(argument)));
         }
@@ -899,12 +945,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final double argument) {
+                            final double argument) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, valueOf(argument)));
         }
@@ -912,12 +959,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final Object argument) {
+                            final Object argument) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, argument));
         }
@@ -925,13 +973,14 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1) {
+                            final Object arg0, final Object arg1) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern, toArray(arg0, arg1)));
         }
@@ -939,14 +988,15 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
-     * @param arg2 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
+     * @param arg2    a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1, final Object arg2) {
+                            final Object arg0, final Object arg1, final Object arg2) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern,
                     toArray(arg0, arg1, arg2)));
@@ -955,16 +1005,17 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at info level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
-     * @param arg2 a value to be formatted and substituted.
-     * @param arg3 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
+     * @param arg2    a value to be formatted and substituted.
+     * @param arg3    a value to be formatted and substituted.
      */
     public static void info(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1, final Object arg2,
-        final Object arg3) {
+                            final Object arg0, final Object arg1, final Object arg2,
+                            final Object arg3) {
         if (logger.isInfoEnabled()) {
             forcedLog(logger, Level.INFO, format(pattern,
                     toArray(arg0, arg1, arg2, arg3)));
@@ -973,12 +1024,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final boolean argument) {
+                            final boolean argument) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern, valueOf(argument)));
         }
@@ -986,12 +1038,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final char argument) {
+                            final char argument) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern, valueOf(argument)));
         }
@@ -999,12 +1052,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final byte argument) {
+                            final byte argument) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern, valueOf(argument)));
         }
@@ -1012,12 +1066,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final short argument) {
+                            final short argument) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern, valueOf(argument)));
         }
@@ -1025,12 +1080,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final int argument) {
+                            final int argument) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern, valueOf(argument)));
         }
@@ -1038,12 +1094,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final long argument) {
+                            final long argument) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern, valueOf(argument)));
         }
@@ -1051,12 +1108,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final float argument) {
+                            final float argument) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern, valueOf(argument)));
         }
@@ -1064,12 +1122,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final double argument) {
+                            final double argument) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern, valueOf(argument)));
         }
@@ -1077,12 +1136,13 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
-     * @param pattern pattern, may be null.
+     *
+     * @param logger   logger, may not be null.
+     * @param pattern  pattern, may be null.
      * @param argument a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final Object argument) {
+                            final Object argument) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern, argument));
         }
@@ -1090,13 +1150,14 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1) {
+                            final Object arg0, final Object arg1) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN,
                     format(pattern, toArray(arg0, arg1)));
@@ -1105,14 +1166,15 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
-     * @param arg2 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
+     * @param arg2    a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1, final Object arg2) {
+                            final Object arg0, final Object arg1, final Object arg2) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN,
                     format(pattern, toArray(arg0, arg1, arg2)));
@@ -1121,16 +1183,17 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at warn level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
-     * @param arg2 a value to be formatted and substituted.
-     * @param arg3 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
+     * @param arg2    a value to be formatted and substituted.
+     * @param arg3    a value to be formatted and substituted.
      */
     public static void warn(final Logger logger, final String pattern,
-        final Object arg0, final Object arg1, final Object arg2,
-        final Object arg3) {
+                            final Object arg0, final Object arg1, final Object arg2,
+                            final Object arg3) {
         if (logger.isEnabledFor(Level.WARN)) {
             forcedLog(logger, Level.WARN, format(pattern,
                     toArray(arg0, arg1, arg2, arg3)));
@@ -1138,16 +1201,17 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message at specified level.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param pattern pattern, may be null.
+     * Log a parameterized message at specified level.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param pattern    pattern, may be null.
      * @param parameters parameters to the log message.
-      */
+     */
     public static void log(final Logger logger,
-                             final Level level,
-                             final String pattern,
-                             final Object[] parameters) {
+                           final Level level,
+                           final String pattern,
+                           final Object[] parameters) {
         if (logger.isEnabledFor(level)) {
             forcedLog(logger, level,
                     format(pattern, parameters));
@@ -1155,18 +1219,19 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message at specified level.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-     * @param t throwable, may be null.
-      * @param pattern pattern, may be null.
+     * Log a parameterized message at specified level.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param t          throwable, may be null.
+     * @param pattern    pattern, may be null.
      * @param parameters parameters to the log message.
-      */
+     */
     public static void log(final Logger logger,
-                             final Level level,
-                             final Throwable t,
-                             final String pattern,
-                             final Object[] parameters) {
+                           final Level level,
+                           final Throwable t,
+                           final String pattern,
+                           final Object[] parameters) {
         if (logger.isEnabledFor(level)) {
             forcedLog(logger, level,
                     format(pattern, parameters), t);
@@ -1174,16 +1239,17 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message at specified level.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param pattern pattern, may be null.
-     * @param param1 parameter to the log message.
-      */
+     * Log a parameterized message at specified level.
+     *
+     * @param logger  logger, may not be null.
+     * @param level   level, may not be null.
+     * @param pattern pattern, may be null.
+     * @param param1  parameter to the log message.
+     */
     public static void log(final Logger logger,
-                             final Level level,
-                             final String pattern,
-                             final Object param1) {
+                           final Level level,
+                           final String pattern,
+                           final Object param1) {
         if (logger.isEnabledFor(level)) {
             forcedLog(logger, level,
                     format(pattern, toArray(param1)));
@@ -1191,140 +1257,17 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message at specified level.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param pattern pattern, may be null.
-     * @param param1 parameter to the log message.
-      */
+     * Log a parameterized message at specified level.
+     *
+     * @param logger  logger, may not be null.
+     * @param level   level, may not be null.
+     * @param pattern pattern, may be null.
+     * @param param1  parameter to the log message.
+     */
     public static void log(final Logger logger,
-                             final Level level,
-                             final String pattern,
-                             final boolean param1) {
-        if (logger.isEnabledFor(level)) {
-            forcedLog(logger, level,
-                    format(pattern, toArray(valueOf(param1))));
-        }
-    }
-
-
-    /**
-      * Log a parameterized message at specified level.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param pattern pattern, may be null.
-     * @param param1 parameter to the log message.
-      */
-    public static void log(final Logger logger,
-                             final Level level,
-                             final String pattern,
-                             final byte param1) {
-        if (logger.isEnabledFor(level)) {
-            forcedLog(logger, level,
-                    format(pattern, toArray(valueOf(param1))));
-        }
-    }
-
-
-    /**
-      * Log a parameterized message at specified level.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param pattern pattern, may be null.
-     * @param param1 parameter to the log message.
-      */
-    public static void log(final Logger logger,
-                             final Level level,
-                             final String pattern,
-                             final char param1) {
-        if (logger.isEnabledFor(level)) {
-            forcedLog(logger, level,
-                    format(pattern, toArray(valueOf(param1))));
-        }
-    }
-
-    /**
-      * Log a parameterized message at specified level.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param pattern pattern, may be null.
-     * @param param1 parameter to the log message.
-      */
-    public static void log(final Logger logger,
-                             final Level level,
-                             final String pattern,
-                             final short param1) {
-        if (logger.isEnabledFor(level)) {
-            forcedLog(logger, level,
-                    format(pattern, toArray(valueOf(param1))));
-        }
-    }
-
-    /**
-      * Log a parameterized message at specified level.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param pattern pattern, may be null.
-     * @param param1 parameter to the log message.
-      */
-    public static void log(final Logger logger,
-                             final Level level,
-                             final String pattern,
-                             final int param1) {
-        if (logger.isEnabledFor(level)) {
-            forcedLog(logger, level,
-                    format(pattern, toArray(valueOf(param1))));
-        }
-    }
-
-
-    /**
-      * Log a parameterized message at specified level.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param pattern pattern, may be null.
-     * @param param1 parameter to the log message.
-      */
-    public static void log(final Logger logger,
-                             final Level level,
-                             final String pattern,
-                             final long param1) {
-        if (logger.isEnabledFor(level)) {
-            forcedLog(logger, level,
-                    format(pattern, toArray(valueOf(param1))));
-        }
-    }
-
-
-    /**
-      * Log a parameterized message at specified level.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param pattern pattern, may be null.
-     * @param param1 parameter to the log message.
-      */
-    public static void log(final Logger logger,
-                             final Level level,
-                             final String pattern,
-                             final float param1) {
-        if (logger.isEnabledFor(level)) {
-            forcedLog(logger, level,
-                    format(pattern, toArray(valueOf(param1))));
-        }
-    }
-
-
-    /**
-      * Log a parameterized message at specified level.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param pattern pattern, may be null.
-     * @param param1 parameter to the log message.
-      */
-    public static void log(final Logger logger,
-                             final Level level,
-                             final String pattern,
-                             final double param1) {
+                           final Level level,
+                           final String pattern,
+                           final boolean param1) {
         if (logger.isEnabledFor(level)) {
             forcedLog(logger, level,
                     format(pattern, toArray(valueOf(param1))));
@@ -1334,16 +1277,148 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at specified level.
-     * @param logger logger, may not be null.
-     * @param level level, may not be null.
+     *
+     * @param logger  logger, may not be null.
+     * @param level   level, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
+     * @param param1  parameter to the log message.
      */
     public static void log(final Logger logger,
-                            final Level level,
-                            final String pattern,
-        final Object arg0, final Object arg1) {
+                           final Level level,
+                           final String pattern,
+                           final byte param1) {
+        if (logger.isEnabledFor(level)) {
+            forcedLog(logger, level,
+                    format(pattern, toArray(valueOf(param1))));
+        }
+    }
+
+
+    /**
+     * Log a parameterized message at specified level.
+     *
+     * @param logger  logger, may not be null.
+     * @param level   level, may not be null.
+     * @param pattern pattern, may be null.
+     * @param param1  parameter to the log message.
+     */
+    public static void log(final Logger logger,
+                           final Level level,
+                           final String pattern,
+                           final char param1) {
+        if (logger.isEnabledFor(level)) {
+            forcedLog(logger, level,
+                    format(pattern, toArray(valueOf(param1))));
+        }
+    }
+
+    /**
+     * Log a parameterized message at specified level.
+     *
+     * @param logger  logger, may not be null.
+     * @param level   level, may not be null.
+     * @param pattern pattern, may be null.
+     * @param param1  parameter to the log message.
+     */
+    public static void log(final Logger logger,
+                           final Level level,
+                           final String pattern,
+                           final short param1) {
+        if (logger.isEnabledFor(level)) {
+            forcedLog(logger, level,
+                    format(pattern, toArray(valueOf(param1))));
+        }
+    }
+
+    /**
+     * Log a parameterized message at specified level.
+     *
+     * @param logger  logger, may not be null.
+     * @param level   level, may not be null.
+     * @param pattern pattern, may be null.
+     * @param param1  parameter to the log message.
+     */
+    public static void log(final Logger logger,
+                           final Level level,
+                           final String pattern,
+                           final int param1) {
+        if (logger.isEnabledFor(level)) {
+            forcedLog(logger, level,
+                    format(pattern, toArray(valueOf(param1))));
+        }
+    }
+
+
+    /**
+     * Log a parameterized message at specified level.
+     *
+     * @param logger  logger, may not be null.
+     * @param level   level, may not be null.
+     * @param pattern pattern, may be null.
+     * @param param1  parameter to the log message.
+     */
+    public static void log(final Logger logger,
+                           final Level level,
+                           final String pattern,
+                           final long param1) {
+        if (logger.isEnabledFor(level)) {
+            forcedLog(logger, level,
+                    format(pattern, toArray(valueOf(param1))));
+        }
+    }
+
+
+    /**
+     * Log a parameterized message at specified level.
+     *
+     * @param logger  logger, may not be null.
+     * @param level   level, may not be null.
+     * @param pattern pattern, may be null.
+     * @param param1  parameter to the log message.
+     */
+    public static void log(final Logger logger,
+                           final Level level,
+                           final String pattern,
+                           final float param1) {
+        if (logger.isEnabledFor(level)) {
+            forcedLog(logger, level,
+                    format(pattern, toArray(valueOf(param1))));
+        }
+    }
+
+
+    /**
+     * Log a parameterized message at specified level.
+     *
+     * @param logger  logger, may not be null.
+     * @param level   level, may not be null.
+     * @param pattern pattern, may be null.
+     * @param param1  parameter to the log message.
+     */
+    public static void log(final Logger logger,
+                           final Level level,
+                           final String pattern,
+                           final double param1) {
+        if (logger.isEnabledFor(level)) {
+            forcedLog(logger, level,
+                    format(pattern, toArray(valueOf(param1))));
+        }
+    }
+
+
+    /**
+     * Log a parameterized message at specified level.
+     *
+     * @param logger  logger, may not be null.
+     * @param level   level, may not be null.
+     * @param pattern pattern, may be null.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
+     */
+    public static void log(final Logger logger,
+                           final Level level,
+                           final String pattern,
+                           final Object arg0, final Object arg1) {
         if (logger.isEnabledFor(level)) {
             forcedLog(logger, level,
                     format(pattern, toArray(arg0, arg1)));
@@ -1352,17 +1427,18 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at specifed level.
-     * @param logger logger, may not be null.
-     * @param level level, may not be null.
+     *
+     * @param logger  logger, may not be null.
+     * @param level   level, may not be null.
      * @param pattern pattern, may be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
-     * @param arg2 a value to be formatted and substituted.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
+     * @param arg2    a value to be formatted and substituted.
      */
     public static void log(final Logger logger,
                            final Level level,
                            final String pattern,
-        final Object arg0, final Object arg1, final Object arg2) {
+                           final Object arg0, final Object arg1, final Object arg2) {
         if (logger.isEnabledFor(level)) {
             forcedLog(logger, level,
                     format(pattern, toArray(arg0, arg1, arg2)));
@@ -1371,19 +1447,20 @@ public final class LogMF extends LogXF {
 
     /**
      * Log a parameterized message at specified level.
-     * @param logger logger, may not be null.
+     *
+     * @param logger  logger, may not be null.
      * @param pattern pattern, may be null.
-     * @param level level, may not be null.
-     * @param arg0 a value to be formatted and substituted.
-     * @param arg1 a value to be formatted and substituted.
-     * @param arg2 a value to be formatted and substituted.
-     * @param arg3 a value to be formatted and substituted.
+     * @param level   level, may not be null.
+     * @param arg0    a value to be formatted and substituted.
+     * @param arg1    a value to be formatted and substituted.
+     * @param arg2    a value to be formatted and substituted.
+     * @param arg3    a value to be formatted and substituted.
      */
     public static void log(final Logger logger,
                            final Level level,
                            final String pattern,
-        final Object arg0, final Object arg1, final Object arg2,
-        final Object arg3) {
+                           final Object arg0, final Object arg1, final Object arg2,
+                           final Object arg3) {
         if (logger.isEnabledFor(level)) {
             forcedLog(logger, level, format(pattern,
                     toArray(arg0, arg1, arg2, arg3)));
@@ -1392,13 +1469,14 @@ public final class LogMF extends LogXF {
 
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
      * @param parameters parameters to the log message.
-      */
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1411,14 +1489,15 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-     * @param t throwable, may be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param t          throwable, may be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
      * @param parameters parameters to the log message.
-      */
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final Throwable t,
@@ -1432,13 +1511,14 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param1 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param1     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1451,13 +1531,14 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param1 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param1     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1470,13 +1551,14 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param1 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param1     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1489,13 +1571,14 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param1 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param1     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1508,13 +1591,14 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param1 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param1     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1527,13 +1611,14 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param1 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param1     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1546,13 +1631,14 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param1 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param1     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1563,14 +1649,16 @@ public final class LogMF extends LogXF {
                     format(bundleName, key, toArray(valueOf(param1))));
         }
     }
+
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param1 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param1     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1584,13 +1672,14 @@ public final class LogMF extends LogXF {
 
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param1 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param1     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1603,14 +1692,15 @@ public final class LogMF extends LogXF {
     }
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param0 Parameter to the log message.
-     * @param param1 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param0     Parameter to the log message.
+     * @param param1     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1625,15 +1715,16 @@ public final class LogMF extends LogXF {
 
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param0 Parameter to the log message.
-     * @param param1 Parameter to the log message.
-     * @param param2 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param0     Parameter to the log message.
+     * @param param1     Parameter to the log message.
+     * @param param2     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,
@@ -1649,16 +1740,17 @@ public final class LogMF extends LogXF {
 
 
     /**
-      * Log a parameterized message using a pattern from a resource bundle.
-      * @param logger logger, may not be null.
-      * @param level level, may not be null.
-      * @param bundleName resource bundle name, may be null.
-     * @param key key, may be null.
-     * @param param0 Parameter to the log message.
-     * @param param1 Parameter to the log message.
-     * @param param2 Parameter to the log message.
-     * @param param3 Parameter to the log message.
-      */
+     * Log a parameterized message using a pattern from a resource bundle.
+     *
+     * @param logger     logger, may not be null.
+     * @param level      level, may not be null.
+     * @param bundleName resource bundle name, may be null.
+     * @param key        key, may be null.
+     * @param param0     Parameter to the log message.
+     * @param param1     Parameter to the log message.
+     * @param param2     Parameter to the log message.
+     * @param param3     Parameter to the log message.
+     */
     public static void logrb(final Logger logger,
                              final Level level,
                              final String bundleName,

@@ -26,7 +26,6 @@ import org.apache.log4j.Level;
  * An extension of the Level class that provides support for java.util.logging
  * Levels.
  *
- *
  * @author Scott Deboy (sdeboy@apache.org)
  */
 
@@ -47,7 +46,7 @@ public class UtilLoggingLevel extends Level {
     public static final int WARNING_INT = 21000;
 
     //INFO level defined in parent as 20000..no need to redefine here
-    
+
     /**
      * Numerical value for CONFIG.
      */
@@ -108,8 +107,9 @@ public class UtilLoggingLevel extends Level {
 
     /**
      * Create new instance.
-     * @param level numeric value for level.
-     * @param levelStr symbolic name for level.
+     *
+     * @param level            numeric value for level.
+     * @param levelStr         symbolic name for level.
      * @param syslogEquivalent Equivalent syslog severity.
      */
     protected UtilLoggingLevel(final int level,
@@ -121,13 +121,14 @@ public class UtilLoggingLevel extends Level {
     /**
      * Convert an integer passed as argument to a level. If the
      * conversion fails, then this method returns the specified default.
-     * @param val numeric value.
+     *
+     * @param val          numeric value.
      * @param defaultLevel level to be returned if no level matches
-     * numeric value.
+     *                     numeric value.
      * @return matching level or default level.
      */
     public static UtilLoggingLevel toLevel(final int val,
-                               final UtilLoggingLevel defaultLevel) {
+                                           final UtilLoggingLevel defaultLevel) {
         switch (val) {
             case SEVERE_INT:
                 return SEVERE;
@@ -157,8 +158,9 @@ public class UtilLoggingLevel extends Level {
 
     /**
      * Gets level matching numeric value.
+     *
      * @param val numeric value.
-     * @return  matching level or UtilLoggerLevel.FINEST if no match.
+     * @return matching level or UtilLoggerLevel.FINEST if no match.
      */
     public static Level toLevel(final int val) {
         return toLevel(val, FINEST);
@@ -166,7 +168,8 @@ public class UtilLoggingLevel extends Level {
 
     /**
      * Gets list of supported levels.
-     * @return  list of supported levels.
+     *
+     * @return list of supported levels.
      */
     public static List getAllPossibleLevels() {
         ArrayList list = new ArrayList();
@@ -182,6 +185,7 @@ public class UtilLoggingLevel extends Level {
 
     /**
      * Get level with specified symbolic name.
+     *
      * @param s symbolic name.
      * @return matching level or Level.DEBUG if no match.
      */
@@ -192,7 +196,8 @@ public class UtilLoggingLevel extends Level {
 
     /**
      * Get level with specified symbolic name.
-     * @param sArg symbolic name.
+     *
+     * @param sArg         symbolic name.
      * @param defaultLevel level to return if no match.
      * @return matching level or defaultLevel if no match.
      */

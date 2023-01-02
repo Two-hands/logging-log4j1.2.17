@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,14 +26,14 @@ import java.net.URL;
 /**
  * This is another simple example of how to use the LogFactor5
  * logging console.
- *
+ * <p>
  * The LF5Appender is the primary class that enables logging to the
  * LogFactor5 logging window. If the following line is added to a properties
  * file, the LF5Appender will be appended to the root category when
  * the properties file is loaded:
- *
- *    log4j.appender.A1=org.apache.log4j.lf5.LF5Appender
- *
+ * <p>
+ * log4j.appender.A1=org.apache.log4j.lf5.LF5Appender
+ * <p>
  * To make this example work, you must ensure that the example.properties file
  * is in your classpath.You can then run the example at the command line.
  *

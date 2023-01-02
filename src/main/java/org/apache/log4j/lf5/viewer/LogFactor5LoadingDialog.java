@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,50 +33,50 @@ import javax.swing.JPanel;
 // Contributed by ThoughtWorks Inc.
 
 public class LogFactor5LoadingDialog extends LogFactor5Dialog {
-  //--------------------------------------------------------------------------
-  //   Constants:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Constants:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Protected Variables:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Protected Variables:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Private Variables:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Private Variables:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Constructors:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Constructors:
+    //--------------------------------------------------------------------------
 
-  public LogFactor5LoadingDialog(JFrame jframe, String message) {
-    super(jframe, "LogFactor5", false);
+    public LogFactor5LoadingDialog(JFrame jframe, String message) {
+        super(jframe, "LogFactor5", false);
 
-    JPanel bottom = new JPanel();
-    bottom.setLayout(new FlowLayout());
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new FlowLayout());
 
-    JPanel main = new JPanel();
-    main.setLayout(new GridBagLayout());
-    wrapStringOnPanel(message, main);
+        JPanel main = new JPanel();
+        main.setLayout(new GridBagLayout());
+        wrapStringOnPanel(message, main);
 
-    getContentPane().add(main, BorderLayout.CENTER);
-    getContentPane().add(bottom, BorderLayout.SOUTH);
-    show();
+        getContentPane().add(main, BorderLayout.CENTER);
+        getContentPane().add(bottom, BorderLayout.SOUTH);
+        show();
 
-  }
-  //--------------------------------------------------------------------------
-  //   Public Methods:
-  //--------------------------------------------------------------------------
+    }
+    //--------------------------------------------------------------------------
+    //   Public Methods:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Protected Methods:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Protected Methods:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Private Methods:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Private Methods:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Nested Top-Level Classes or Interfaces
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Nested Top-Level Classes or Interfaces
+    //--------------------------------------------------------------------------
 }

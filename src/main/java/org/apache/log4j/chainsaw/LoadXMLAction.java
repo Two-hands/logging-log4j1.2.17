@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,6 +26,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
+
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -38,12 +39,15 @@ import org.xml.sax.XMLReader;
  * @version 1.0
  */
 class LoadXMLAction
-    extends AbstractAction
-{
-    /** use to log messages **/
+        extends AbstractAction {
+    /**
+     * use to log messages
+     **/
     private static final Logger LOG = Logger.getLogger(LoadXMLAction.class);
 
-    /** the parent frame **/
+    /**
+     * the parent frame
+     **/
     private final JFrame mParent;
 
     /**
@@ -51,14 +55,19 @@ class LoadXMLAction
      * single file.
      */
     private final JFileChooser mChooser = new JFileChooser();
+
     {
         mChooser.setMultiSelectionEnabled(false);
         mChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
 
-    /** parser to read XML files **/
+    /**
+     * parser to read XML files
+     **/
     private final XMLReader mParser;
-    /** the content handler **/
+    /**
+     * the content handler
+     **/
     private final XMLFileHandler mHandler;
 
 
@@ -66,13 +75,12 @@ class LoadXMLAction
      * Creates a new <code>LoadXMLAction</code> instance.
      *
      * @param aParent the parent frame
-     * @param aModel the model to add events to
-     * @exception SAXException if an error occurs
+     * @param aModel  the model to add events to
+     * @throws SAXException                 if an error occurs
      * @throws ParserConfigurationException if an error occurs
      */
     LoadXMLAction(JFrame aParent, MyTableModel aModel)
-        throws SAXException, ParserConfigurationException
-    {
+            throws SAXException, ParserConfigurationException {
         mParent = aParent;
         mHandler = new XMLFileHandler(aModel);
         mParser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
@@ -81,6 +89,7 @@ class LoadXMLAction
 
     /**
      * Prompts the user for a file to load events from.
+     *
      * @param aIgnore an <code>ActionEvent</code> value
      */
     public void actionPerformed(ActionEvent aIgnore) {
@@ -92,17 +101,17 @@ class LoadXMLAction
             try {
                 final int num = loadFile(chosen.getAbsolutePath());
                 JOptionPane.showMessageDialog(
-                    mParent,
-                    "Loaded " + num + " events.",
-                    "CHAINSAW",
-                    JOptionPane.INFORMATION_MESSAGE);
+                        mParent,
+                        "Loaded " + num + " events.",
+                        "CHAINSAW",
+                        JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
                 LOG.warn("caught an exception loading the file", e);
                 JOptionPane.showMessageDialog(
-                    mParent,
-                    "Error parsing file - " + e.getMessage(),
-                    "CHAINSAW",
-                    JOptionPane.ERROR_MESSAGE);
+                        mParent,
+                        "Error parsing file - " + e.getMessage(),
+                        "CHAINSAW",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -113,11 +122,10 @@ class LoadXMLAction
      * @param aFile the file to extract events from
      * @return the number of events loaded
      * @throws SAXException if an error occurs
-     * @throws IOException if an error occurs
+     * @throws IOException  if an error occurs
      */
     private int loadFile(String aFile)
-        throws SAXException, IOException
-    {
+            throws SAXException, IOException {
         synchronized (mParser) {
             // Create a dummy document to parse the file
             final StringBuffer buf = new StringBuffer();
@@ -131,7 +139,7 @@ class LoadXMLAction
             buf.append("</log4j:eventSet>\n");
 
             final InputSource is =
-                new InputSource(new StringReader(buf.toString()));
+                    new InputSource(new StringReader(buf.toString()));
             mParser.parse(is);
             return mHandler.getNumEvents();
         }

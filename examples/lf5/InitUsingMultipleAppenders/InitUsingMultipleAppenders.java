@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,31 +25,31 @@ import java.net.URL;
 /**
  * This example shows how to use LogFactor5 with other Log4J appenders
  * (In this case the RollingFileAppender).
- *
+ * <p>
  * The following lines can be added to the log4j.properties file or a
  * standard Java properties file.
- *
- *   # Two appenders are registered with the root of the Category tree.
- *
- *   log4j.rootCategory=, A1, R
- *
- *   # A1 is set to be a LF5Appender which outputs to a swing
- *   # logging console.
- *
- *   log4j.appender.A1=org.apache.log4j.lf5.LF5Appender
- *
- *   # R is the RollingFileAppender that outputs to a rolling log
- *   # file called rolling_log_file.log.
- *
+ * <p>
+ * # Two appenders are registered with the root of the Category tree.
+ * <p>
+ * log4j.rootCategory=, A1, R
+ * <p>
+ * # A1 is set to be a LF5Appender which outputs to a swing
+ * # logging console.
+ * <p>
+ * log4j.appender.A1=org.apache.log4j.lf5.LF5Appender
+ * <p>
+ * # R is the RollingFileAppender that outputs to a rolling log
+ * # file called rolling_log_file.log.
+ * <p>
  * log4j.appender.R=org.apache.log4j.RollingFileAppender
  * log4j.appender.R.File=rolling_log_file.log
- *
+ * <p>
  * log4j.appender.R.layout=org.apache.log4j.PatternLayout
  * log4j.appender.R.layout.ConversionPattern=Date - %d{DATE}%nPriority
  * - %p%nThread - %t%nCategory - %c%nLocation - %l%nMessage - %m%n%n
  * log4j.appender.R.MaxFileSize=100KB
  * log4j.appender.R.MaxBackupIndex=1
- *
+ * <p>
  * To make this example work, either run the InitUsingMultipleAppenders.bat
  * file located in the examples folder or run it at the command line. If you
  * are running the example at the command line, you must ensure that the

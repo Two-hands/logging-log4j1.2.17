@@ -25,26 +25,27 @@ package org.apache.log4j.pattern;
  * @author Curt Arnold
  */
 public final class FileDatePatternConverter {
-  /**
-   * Private constructor.
-   */
-  private FileDatePatternConverter() {
-  }
-
-  /**
-   * Obtains an instance of pattern converter.
-   * @param options options, may be null.
-   * @return instance of pattern converter.
-   */
-  public static PatternConverter newInstance(
-    final String[] options) {
-    if ((options == null) || (options.length == 0)) {
-      return DatePatternConverter.newInstance(
-        new String[] {
-                "yyyy-MM-dd"
-        });
+    /**
+     * Private constructor.
+     */
+    private FileDatePatternConverter() {
     }
 
-    return DatePatternConverter.newInstance(options);
-  }
+    /**
+     * Obtains an instance of pattern converter.
+     *
+     * @param options options, may be null.
+     * @return instance of pattern converter.
+     */
+    public static PatternConverter newInstance(
+            final String[] options) {
+        if ((options == null) || (options.length == 0)) {
+            return DatePatternConverter.newInstance(
+                    new String[]{
+                            "yyyy-MM-dd"
+                    });
+        }
+
+        return DatePatternConverter.newInstance(options);
+    }
 }

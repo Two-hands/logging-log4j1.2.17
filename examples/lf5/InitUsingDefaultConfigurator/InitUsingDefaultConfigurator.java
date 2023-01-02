@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,7 @@ import java.io.IOException;
 /**
  * This class is a simple example of how to configure the LogFactor5
  * logging window using the DefaultLF5Configurator.
- *
+ * <p>
  * The DefaultLF5Configurator uses a default configuration file stored
  * in the log4j.jar in order to provide a default configuration for
  * the LF5Appender.

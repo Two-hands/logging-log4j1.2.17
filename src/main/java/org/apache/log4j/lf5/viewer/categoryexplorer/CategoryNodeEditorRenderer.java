@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,54 +31,54 @@ import javax.swing.JTree;
 // Contributed by ThoughtWorks Inc.
 
 public class CategoryNodeEditorRenderer extends CategoryNodeRenderer {
-  private static final long serialVersionUID = -6094804684259929574L;
+    private static final long serialVersionUID = -6094804684259929574L;
 
-  //--------------------------------------------------------------------------
-  //   Constants:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Constants:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Protected Variables:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Protected Variables:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Private Variables:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Private Variables:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Constructors:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Constructors:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Public Methods:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Public Methods:
+    //--------------------------------------------------------------------------
 
-  public Component getTreeCellRendererComponent(
-      JTree tree, Object value,
-      boolean selected, boolean expanded,
-      boolean leaf, int row,
-      boolean hasFocus) {
-    Component c = super.getTreeCellRendererComponent(tree,
-        value, selected, expanded,
-        leaf, row, hasFocus);
+    public Component getTreeCellRendererComponent(
+            JTree tree, Object value,
+            boolean selected, boolean expanded,
+            boolean leaf, int row,
+            boolean hasFocus) {
+        Component c = super.getTreeCellRendererComponent(tree,
+                value, selected, expanded,
+                leaf, row, hasFocus);
 
-    return c;
-  }
+        return c;
+    }
 
-  public JCheckBox getCheckBox() {
-    return _checkBox;
-  }
+    public JCheckBox getCheckBox() {
+        return _checkBox;
+    }
 
-  //--------------------------------------------------------------------------
-  //   Protected Methods:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Protected Methods:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Private Methods:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Private Methods:
+    //--------------------------------------------------------------------------
 
-  //--------------------------------------------------------------------------
-  //   Nested Top-Level Classes or Interfaces:
-  //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //   Nested Top-Level Classes or Interfaces:
+    //--------------------------------------------------------------------------
 
 }
